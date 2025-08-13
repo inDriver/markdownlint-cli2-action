@@ -108,7 +108,7 @@ if (resultsFile && resultsFile.length > 0) {
     outputFormatters.push([makeFileFormatter(resultsFile)])
 }
 
-core.info(`Formatters: ${outputFormatters.length}`)
+logMessage(`Formatters: ${outputFormatters.length}`)
 
 const parameters = {
   argv,
