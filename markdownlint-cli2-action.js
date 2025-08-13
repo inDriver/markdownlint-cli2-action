@@ -98,7 +98,7 @@ if (fix) {
   argv.push("--fix");
 }
 
-const outputFormatters = [[ outputFormatter ]]
+const outputFormatters = [ outputFormatter ]
 
 const resultsFile =
     core.getInput("results_file") ||
@@ -112,7 +112,7 @@ const parameters = {
   argv,
   logMessage,
   "optionsOverride": {
-    "outputFormatters": outputFormatters
+    "outputFormatters": [outputFormatters]
   }
 };
 markdownlintCli2(parameters).then(
