@@ -112,7 +112,7 @@ const parameters = {
   argv,
   logMessage,
   "optionsOverride": {
-    "outputFormatters": [outputFormatters]
+    "outputFormatters": [[outputFormatters[1]]]
   }
 };
 markdownlintCli2(parameters).then(
