@@ -101,7 +101,7 @@ if (fix) {
 const outputFormatters = [[ outputFormatter ]]
 
 const resultsFile =
-    core.getInput("results-file") ||
+    core.getInput("results_file") ||
     process.env.MARKDOWNLINT_RESULTS_FILE ||
     "markdownlint-results.json";
 if (resultsFile && resultsFile.length > 0) {
