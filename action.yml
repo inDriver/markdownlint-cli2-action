@@ -21,6 +21,10 @@ inputs:
     description: String to use as a separator for the "globs" input (defaults to newline)
     default: "\n"
     required: false
+  results_file:
+    description: File to write json result report
+    default: ""
+    required: false
 runs:
   using: node20
   main: dist/index.js
