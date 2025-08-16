@@ -58827,23 +58827,23 @@ const outputFormatter = (options) => {
   }
 };
 
-const makeFileFormatter = (destPath) => (options) => {
-  const { results, logMessage } = options;
+const makeFileFormatter = (destinationPath) => (options) => {
+  const { results } = options;
 
-  const findings = results.map((r) => ({
-    file: r.fileName,
-    line: r.lineNumber,
-    column: r.errorRange ? r.errorRange[0] : null,
-    endColumn: r.errorRange ? r.errorRange[0] + r.errorRange[1] - 1 : null,
-    rule: r.ruleNames.join("/"),
-    rulePrimary: r.ruleNames[0],
-    description: r.ruleDescription,
-    detail: r.errorDetail || null,
-    context: r.errorContext || null,
-    infoUrl: r.ruleInformation || null
+  const findings = results.map((reportItem) => ({
+    'file': reportItem.fileName,
+    'line': reportItem.lineNumber,
+    'column': reportItem.errorRange ? reportItem.errorRange[0] : null,
+    'endColumn': reportItem.errorRange ? reportItem.errorRange[0] + reportItem.errorRange[1] - 1 : null,
+    'rule': reportItem.ruleNames.join("/"),
+    'rulePrimary': reportItem.ruleNames[0],
+    'description': reportItem.ruleDescription,
+    'detail': reportItem.errorDetail || null,
+    'context': reportItem.errorContext || null,
+    'infoUrl': reportItem.ruleInformation || null
   }));
 
-  const outFile = path.resolve(destPath);
+  const outFile = path.resolve(destinationPath);
   try {
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
     const payload = {
@@ -58878,10 +58878,10 @@ const outputFormatters = [ [ outputFormatter ] ];
 
 const resultsFile = core.getInput("results_file");
 if (resultsFile && resultsFile.length > 0) {
-  core.info(`Markdown lint report will be recorded in file ${resultsFile}`)
+  logMessage(`Markdown lint report will be recorded in file ${resultsFile}`)
   outputFormatters.push([ makeFileFormatter(resultsFile) ]);
 } else {
-  core.info(`Markdown lint creating file report skipped`)
+  logMessage(`Markdown lint creating file report skipped`)
 }
 
 const parameters = {
