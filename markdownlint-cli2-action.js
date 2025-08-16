@@ -55,16 +55,16 @@ const makeFileFormatter = (destinationPath) => (options) => {
   const { results } = options;
 
   const findings = results.map((reportItem) => ({
-    'file': reportItem.fileName,
-    'line': reportItem.lineNumber,
-    'column': reportItem.errorRange ? reportItem.errorRange[0] : null,
-    'endColumn': reportItem.errorRange ? reportItem.errorRange[0] + reportItem.errorRange[1] - 1 : null,
-    'rule': reportItem.ruleNames.join("/"),
-    'rulePrimary': reportItem.ruleNames[0],
-    'description': reportItem.ruleDescription,
-    'detail': reportItem.errorDetail || null,
-    'context': reportItem.errorContext || null,
-    'infoUrl': reportItem.ruleInformation || null
+    "file": reportItem.fileName,
+    "line": reportItem.lineNumber,
+    "column": reportItem.errorRange ? reportItem.errorRange[0] : null,
+    "endColumn": reportItem.errorRange ? reportItem.errorRange[0] + reportItem.errorRange[1] - 1 : null,
+    "rule": reportItem.ruleNames.join("/"),
+    "rulePrimary": reportItem.ruleNames[0],
+    "description": reportItem.ruleDescription,
+    "detail": reportItem.errorDetail || null,
+    "context": reportItem.errorContext || null,
+    "infoUrl": reportItem.ruleInformation || null
   }));
 
   const outFile = path.resolve(destinationPath);
