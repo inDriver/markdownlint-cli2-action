@@ -67,7 +67,7 @@ const makeFileFormatter = (destPath) => (options) => {
     infoUrl: r.ruleInformation || null
   }));
 
-  const outFile = path.resolve(destPath || "markdownlint-results.json");
+  const outFile = path.resolve(destPath);
   try {
     fs.mkdirSync(path.dirname(outFile), { recursive: true });
     const payload = {
@@ -98,17 +98,15 @@ if (fix) {
   argv.push("--fix");
 }
 
-const outputFormatters = [[ outputFormatter ]]
+const outputFormatters = [ [ outputFormatter ] ];
 
-const resultsFile =
-    core.getInput("results_file") ||
-    process.env.MARKDOWNLINT_RESULTS_FILE ||
-    "markdownlint-results.json";
+const resultsFile = core.getInput("results_file");
 if (resultsFile && resultsFile.length > 0) {
-    outputFormatters.push([makeFileFormatter(resultsFile)])
+  core.info(`Markdown lint report will be recorded in file ${resultsFile}`)
+  outputFormatters.push([ makeFileFormatter(resultsFile) ]);
+} else {
+  core.info(`Markdown lint creating file report skipped`)
 }
-
-logMessage(`Formatters: ${outputFormatters.length}`)
 
 const parameters = {
   argv,
