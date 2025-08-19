@@ -69,12 +69,12 @@ const makeFileFormatter = (destinationPath) => (options) => {
 
   const outFile = path.resolve(destinationPath);
   try {
-    fs.mkdirSync(path.dirname(outFile), { recursive: true });
+    fs.mkdirSync(path.dirname(outFile), { "recursive": true });
     const payload = {
-      tool: "markdownlint-cli2",
-      version: 1,
-      count: findings.length,
-      results: findings
+      "tool": "markdownlint-cli2",
+      "version": 1,
+      "count": findings.length,
+      "results": findings
     };
     fs.writeFileSync(outFile, JSON.stringify(payload, null, 2));
     logMessage(`Wrote markdownlint results to: ${outFile} (${findings.length} issues)`);
