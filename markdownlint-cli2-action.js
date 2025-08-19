@@ -102,10 +102,10 @@ const outputFormatters = [ [ outputFormatter ] ];
 
 const resultsFile = core.getInput("results_file");
 if (resultsFile && resultsFile.length > 0) {
-  logMessage(`Markdown lint report will be recorded in file ${resultsFile}`)
+  logMessage(`Markdown lint report will be recorded in file ${resultsFile}`);
   outputFormatters.push([ makeFileFormatter(resultsFile) ]);
 } else {
-  logMessage(`Markdown lint creating file report skipped`)
+  logMessage(`Markdown lint creating file report skipped`);
 }
 
 const parameters = {
