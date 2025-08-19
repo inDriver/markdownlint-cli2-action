@@ -78,8 +78,8 @@ const makeFileFormatter = (destinationPath) => (options) => {
     };
     fs.writeFileSync(outFile, JSON.stringify(payload, null, 2));
     logMessage(`Wrote markdownlint results to: ${outFile} (${findings.length} issues)`);
-  } catch (err) {
-    core.warning(`Failed to write results file: ${err instanceof Error ? err.message : String(err)}`);
+  } catch (error) {
+    core.warning(`Failed to write results file: ${error instanceof Error ? error.message : String(error)}`);
   }
 };
 
