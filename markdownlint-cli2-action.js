@@ -4,6 +4,8 @@
 
 const core = require("@actions/core");
 const { "main": markdownlintCli2 } = require("markdownlint-cli2");
+const fs = require("node:fs");
+const path = require("node:path");
 
 const logMessage = core.info;
 const outputFormatter = (options) => {
@@ -49,6 +51,38 @@ const outputFormatter = (options) => {
   }
 };
 
+const makeFileFormatter = (destinationPath) => (options) => {
+  const { results } = options;
+
+  const findings = results.map((reportItem) => ({
+    "file": reportItem.fileName,
+    "line": reportItem.lineNumber,
+    "column": reportItem.errorRange ? reportItem.errorRange[0] : null,
+    "endColumn": reportItem.errorRange ? reportItem.errorRange[0] + reportItem.errorRange[1] - 1 : null,
+    "rule": reportItem.ruleNames.join("/"),
+    "rulePrimary": reportItem.ruleNames[0],
+    "description": reportItem.ruleDescription,
+    "detail": reportItem.errorDetail || null,
+    "context": reportItem.errorContext || null,
+    "infoUrl": reportItem.ruleInformation || null
+  }));
+
+  const outFile = path.resolve(destinationPath);
+  try {
+    fs.mkdirSync(path.dirname(outFile), { "recursive": true });
+    const payload = {
+      "tool": "markdownlint-cli2",
+      "version": 1,
+      "count": findings.length,
+      "results": findings
+    };
+    fs.writeFileSync(outFile, JSON.stringify(payload, null, 2));
+    logMessage(`Wrote markdownlint results to: ${outFile} (${findings.length} issues)`);
+  } catch (error) {
+    core.warning(`Failed to write results file: ${error instanceof Error ? error.message : String(error)}`);
+  }
+};
+
 const separator = core.getInput("separator") || "\n";
 const argv =
   core.getInput("globs").
@@ -64,11 +98,21 @@ if (fix) {
   argv.push("--fix");
 }
 
+const outputFormatters = [ [ outputFormatter ] ];
+
+const resultsFile = core.getInput("results_file");
+if (resultsFile && resultsFile.length > 0) {
+  logMessage(`Markdown lint report will be recorded in file ${resultsFile}`);
+  outputFormatters.push([ makeFileFormatter(resultsFile) ]);
+} else {
+  logMessage(`Markdown lint creating file report skipped`);
+}
+
 const parameters = {
   argv,
   logMessage,
   "optionsOverride": {
-    "outputFormatters": [ [ outputFormatter ] ]
+    "outputFormatters": outputFormatters
   }
 };
 markdownlintCli2(parameters).then(

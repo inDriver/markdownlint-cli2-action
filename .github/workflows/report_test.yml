@@ -1,0 +1,21 @@
+name: Local Markdown Lint Test
+
+on: [workflow_dispatch]
+
+jobs:
+  lint_local_test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      - name: Run Local Markdown Lint Action
+        uses: ./
+        with:
+          globs: |
+            **/*.md
+            !node_modules/**/*.md
+          results_file: ./local/lint_results.json
+
+      - name: Keep container alive for debugging
+        run: sleep 3600
